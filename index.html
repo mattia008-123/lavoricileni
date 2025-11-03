@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Numeri Casuali</h1>
+<h1>Numeri Casuali </h1>
 
 <div id="array"></div>
 <p id="media"></p>
@@ -17,24 +17,25 @@
 <div id="over50"></div>
 
 <script>
-  // crea array di 100 numeri casuali tra -100 e 100
+  
   let numeri = [];
   for (let i = 0; i < 100; i++) {
-    numeri.push(Math.random() * 200 - 100);
+    let n = Math.floor(Math.random() * 201) - 100; 
+    numeri.push(n);
   }
 
-  // calcola media
+  
   let somma = 0;
   for (let i = 0; i < numeri.length; i++) {
     somma += numeri[i];
   }
   let media = somma / numeri.length;
 
-  // trova max e min
+  
   let max = Math.max(...numeri);
   let min = Math.min(...numeri);
 
-  // numeri > 50
+  
   let maggiori50 = [];
   for (let i = 0; i < numeri.length; i++) {
     if (numeri[i] > 50) {
@@ -45,20 +46,20 @@
 
   let output = "<table border='1'><tr><th>Indice</th><th>Valore</th></tr>";
   for (let i = 0; i < numeri.length; i++) {
-    output += "<tr><td>" + i + "</td><td>" + numeri[i].toFixed(2) + "</td></tr>";
+    output += "<tr><td>" + i + "</td><td>" + numeri[i] + "</td></tr>";
   }
   output += "</table>";
   document.getElementById("array").innerHTML = output;
 
   
   document.getElementById("media").innerText = "Media: " + media.toFixed(2);
-  document.getElementById("max").innerText = "Massimo: " + max.toFixed(2);
-  document.getElementById("min").innerText = "Minimo: " + min.toFixed(2);
+  document.getElementById("max").innerText = "Massimo: " + max;
+  document.getElementById("min").innerText = "Minimo: " + min;
 
-
+  
   let out2 = "<table border='1'><tr><th>Valori > 50</th></tr>";
   for (let i = 0; i < maggiori50.length; i++) {
-    out2 += "<tr><td>" + maggiori50[i].toFixed(2) + "</td></tr>";
+    out2 += "<tr><td>" + maggiori50[i] + "</td></tr>";
   }
   out2 += "</table>";
   document.getElementById("over50").innerHTML = out2;
