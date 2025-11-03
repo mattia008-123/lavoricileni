@@ -1,88 +1,68 @@
-<!doctype html>
-<html lang="it">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8">
-  <title>Esercizio Numeri Casuali</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    .griglia {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 5px;
-      margin-top: 20px;
-    }
-    .cella {
-      background-color: white;
-      border: 1px solid #ccc;
-      text-align: center;
-      padding: 8px;
-      border-radius: 5px;
-    }
-    .maggiore50 {
-      background-color: #b6ffb6; /* verde chiaro */
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Numeri Casuali </title>
 </head>
 <body>
 
-  <h1>Numeri casuali tra -100 e 100</h1>
+<h1>Numeri Casuali</h1>
 
-  <p><b>Media:</b> <span id="media"></span></p>
-  <p><b>Massimo:</b> <span id="max"></span> | <b>Minimo:</b> <span id="min"></span></p>
-  <p><b>Numeri > 50:</b> <span id="numMag50"></span></p>
+<div id="array"></div>
+<p id="media"></p>
+<p id="max"></p>
+<p id="min"></p>
 
-  <div class="griglia" id="griglia"></div>
+<h2>Numeri > 50</h2>
+<div id="over50"></div>
 
-  <script>
-    // creo un array con 100 numeri casuali tra -100 e 100
-    let numeri = [];
-    for (let i = 0; i < 100; i++) {
-      let n = Math.random() * 200 - 100; // da -100 a 100
-      numeri.push(n);
+<script>
+  // crea array di 100 numeri casuali tra -100 e 100
+  let numeri = [];
+  for (let i = 0; i < 100; i++) {
+    numeri.push(Math.random() * 200 - 100);
+  }
+
+  // calcola media
+  let somma = 0;
+  for (let i = 0; i < numeri.length; i++) {
+    somma += numeri[i];
+  }
+  let media = somma / numeri.length;
+
+  // trova max e min
+  let max = Math.max(...numeri);
+  let min = Math.min(...numeri);
+
+  // numeri > 50
+  let maggiori50 = [];
+  for (let i = 0; i < numeri.length; i++) {
+    if (numeri[i] > 50) {
+      maggiori50.push(numeri[i]);
     }
+  }
 
-    // calcolo la media
-    let somma = 0;
-    for (let i = 0; i < numeri.length; i++) {
-      somma += numeri[i];
-    }
-    let media = somma / numeri.length;
 
-    // trovo massimo e minimo
-    let max = Math.max(...numeri);
-    let min = Math.min(...numeri);
+  let output = "<table border='1'><tr><th>Indice</th><th>Valore</th></tr>";
+  for (let i = 0; i < numeri.length; i++) {
+    output += "<tr><td>" + i + "</td><td>" + numeri[i].toFixed(2) + "</td></tr>";
+  }
+  output += "</table>";
+  document.getElementById("array").innerHTML = output;
 
-    // numeri maggiori di 50
-    let numMag50 = numeri.filter(x => x > 50);
+  
+  document.getElementById("media").innerText = "Media: " + media.toFixed(2);
+  document.getElementById("max").innerText = "Massimo: " + max.toFixed(2);
+  document.getElementById("min").innerText = "Minimo: " + min.toFixed(2);
 
-    // scrivo i risultati
-    document.getElementById("media").innerText = media.toFixed(2);
-    document.getElementById("max").innerText = max.toFixed(2);
-    document.getElementById("min").innerText = min.toFixed(2);
-    document.getElementById("numMag50").innerText = numMag50.length;
 
-    // creo la griglia
-    let griglia = document.getElementById("griglia");
-    for (let i = 0; i < numeri.length; i++) {
-      let cella = document.createElement("div");
-      cella.classList.add("cella");
-
-      // se il numero è maggiore di 50 lo coloro di verde
-      if (numeri[i] > 50) {
-        cella.classList.add("maggiore50");
-      }
-
-      cella.innerText = numeri[i].toFixed(2);
-      griglia.appendChild(cella);
-    }
-  </script>
+  let out2 = "<table border='1'><tr><th>Valori > 50</th></tr>";
+  for (let i = 0; i < maggiori50.length; i++) {
+    out2 += "<tr><td>" + maggiori50[i].toFixed(2) + "</td></tr>";
+  }
+  out2 += "</table>";
+  document.getElementById("over50").innerHTML = out2;
+</script>
 
 </body>
 </html>
