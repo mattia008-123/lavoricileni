@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Anagrafica</title>
+</head>
+<body>
+
+<h3>Anagrafica Utente</h3>
+
+<form onsubmit="event.preventDefault(); mostra();">
+Nome: <input id="nome"><br>
+Cognome: <input id="cognome"><br>
+Indirizzo: <input id="indirizzo"><br>
+Città: <input id="citta"><br>
+CAP: <input id="cap"><br>
+Data di nascita: <input type="date" id="nascita"><br>
+
+Sesso:
+<input type="radio" name="sesso" value="M">M
+<input type="radio" name="sesso" value="F">F
+<input type="radio" name="sesso" value="Altro">Altro<br>
+
+Provincia:
+<select id="provincia">
+<option></option>
+<option>MI</option>
+<option>TO</option>
+<option>RM</option>
+<option>NA</option>
+<option>FI</option>
+</select><br>
+
+Mezzi:<br>
+<input type="checkbox" value="Auto">Auto
+<input type="checkbox" value="Moto">Moto
+<input type="checkbox" value="Bici">Bici
+<input type="checkbox" value="Aereo">Aereo
+<input type="checkbox" value="Yacht">Yacht<br>
+
+Materie (max 3):<br>
+<select id="materie" multiple size="5">
+<option>Italiano</option>
+<option>Matematica</option>
+<option>Fisica</option>
+<option>Storia</option>
+<option>Informatica</option>
+<option>Arte</option>
+<option>Musica</option>
+</select><br>
+
+<button>Invia</button>
+</form>
+
+<p id="ris"></p>
+
+<script>
+function gen(a){
+ if(a>=2013)return"Gen Alpha";
+ if(a>=1997)return"Gen Z";
+ if(a>=1981)return"Millennials";
+ if(a>=1965)return"Gen X";
+ if(a>=1946)return"Boomers";
+ if(a>=1928)return"Silenziosa";
+ if(a>=1901)return"Greatest";
+ return"Antica";
+}
+function mostra(){
+ let n=document.getElementById("nome").value;
+ let c=document.getElementById("cognome").value;
+ let a=new Date(document.getElementById("nascita").value).getFullYear();
+ let s=document.querySelector("input[name='sesso']:checked")?.value||"";
+ let p=document.getElementById("provincia").value;
+ let mezzi=[...document.querySelectorAll("input[type='checkbox']:checked")].map(x=>x.value);
+ let mat=[...document.getElementById("materie").selectedOptions].map(x=>x.value);
+ if(mat.length>3){alert("Max 3 materie");return;}
+ document.getElementById("ris").innerHTML=n+" "+c+"<br>"+a+" "+gen(a)+"<br>"+s+"<br>"+p+"<br>"+mezzi.join(", ")+"<br>"+mat.join(", ");
+}
+</script>
+
+</body>
+</html>
+        
