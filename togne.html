@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Anagrafica Vargas e Tognetti</title>
+</head>
+<body>
+
+<h3>Anagrafica Utente</h3>
+
+<form id="anagraficaForm">
+Nome: <input id="nome"><br>
+Cognome: <input id="cognome"><br>
+Data di nascita: <input type="date" id="nascita"><br>
+
+Sesso:
+<input type="radio" name="sesso" value="M">M
+<input type="radio" name="sesso" value="F">F<br>
+
+Provincia:
+<select id="provincia">
+<option>MI</option>
+<option>TO</option>
+</select><br>
+
+Mezzi:<br>
+<input type="checkbox" name="mezzi" value="Auto">Auto
+<input type="checkbox" name="mezzi" value="Moto">Moto
+<input type="checkbox" name="mezzi" value="Bici">Bici<br>
+
+Materie (max 3):<br>
+<select id="materie" multiple size="3">
+<option>Italiano</option>
+<option>Matematica</option>
+<option>Fisica</option>
+</select><br>
+
+<button type="button" onclick="mostra()">
+    Invia Dati
+</button>
+</form>
+
+<p id="ris"></p>
+
+<script>
+function gen(a){
+ if(a>=2013) return "Alpha";
+ if(a>=1997) return "Z";
+ if(a>=1981) return "Millennials";
+ return "Precedente";
+}
+
+function mostra(){
+    let materieSelect = document.getElementById("materie");
+    let materie = [];
+    for(let i=0; i < materieSelect.options.length; i++){
+        if(materieSelect.options[i].selected){
+            materie.push(materieSelect.options[i].value);
+        }
+    }
+    if(materie.length > 3){
+        alert("Errore: Puoi selezionare al massimo 3 materie.");
+        return; 
+    }
+
+    let dataNascita = document.getElementById("nascita").value;
+    let anno = new Date(dataNascita).getFullYear();
+    
+    let sessoElementi = document.getElementsByName("sesso");
+    let sesso = "";
+    for(let i=0; i < sessoElementi.length; i++){
+        if(sessoElementi[i].checked) { sesso = sessoElementi[i].value; break; }
+    }
+    
+    let mezziElementi = document.getElementsByName("mezzi");
+    let mezzi = [];
+    for(let i=0; i < mezziElementi.length; i++){
+        if(mezziElementi[i].checked) { mezzi.push(mezziElementi[i].value); }
+    }
+    
+    let persona = {
+        nome: document.getElementById("nome").value,
+        cognome: document.getElementById("cognome").value,
+        anno: anno,
+        generazione: gen(anno),
+        sesso: sesso,
+        provincia: document.getElementById("provincia").value,
+        mezzi: mezzi,
+        materie: materie
+    };
+
+    document.getElementById("ris").innerHTML = 
+        "*Invio Riuscito!*<br>" + 
+        "*Nome:* " + persona.nome + " " + persona.cognome + "<br>" +
+        "*Nascita:* " + persona.anno + " (" + persona.generazione + ")<br>" +
+        "*Sesso:* " + persona.sesso + "<br>" +
+        "*Provincia:* " + persona.provincia + "<br>" +
+        "*Mezzi:* " + persona.mezzi.join(", ") + "<br>" +
+        "*Materie:* " + persona.materie.join(", ");
+}
+</script>
+
+</body>
+</html>
