@@ -62,11 +62,48 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom colors for Eco-Sostenibile theme
+        "eco-green": {
+          50: "#e0f7e0",
+          100: "#c8edc8",
+          200: "#a0e0a0",
+          300: "#78d378",
+          400: "#50c650",
+          500: "#28b928", // Main vibrant green
+          600: "#209420",
+          700: "#186f18",
+          800: "#104a10",
+          900: "#082508",
+        },
+        "eco-blue": {
+          50: "#e0f7fa",
+          100: "#c8eff2",
+          200: "#a0e3e8",
+          300: "#78d7df",
+          400: "#50cbda",
+          500: "#28bfd1", // Complementary blue
+          600: "#2098a7",
+          700: "#18717d",
+          800: "#104a53",
+          900: "#082329",
+        },
+        "eco-gray": {
+          50: "#f8f8f8",
+          100: "#e8e8e8",
+          200: "#d0d0d0",
+          300: "#b8b8b8",
+          400: "#a0a0a0",
+          500: "#888888",
+          600: "#686868",
+          700: "#484848",
+          800: "#282828",
+          900: "#181818",
+        },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "1rem", // More rounded corners
+        md: "0.75rem",
+        sm: "0.5rem",
       },
       keyframes: {
         "accordion-down": {
