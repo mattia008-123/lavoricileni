@@ -99,13 +99,13 @@ const ProjectDetails = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <Link to="/" className="inline-flex items-center text-eco-blue-500 hover:text-eco-blue-700 transition-colors mb-6 rounded-full p-2 hover:bg-eco-blue-50">
+    <div className="space-y-8">
+      <Link to="/" className="inline-flex items-center text-eco-blue-500 hover:text-eco-blue-700 transition-colors rounded-full p-2 hover:bg-eco-blue-50">
         <ArrowLeft className="h-5 w-5 mr-2" />
         <span className="font-medium">Torna alla Home</span>
       </Link>
 
-      <Card className="mb-8 rounded-lg shadow-lg border-eco-green-200">
+      <Card className="rounded-lg shadow-lg border-eco-green-200">
         <CardHeader className="bg-eco-green-500 text-white rounded-t-lg p-6">
           <CardTitle className="text-3xl font-bold text-center">{project.name}</CardTitle>
         </CardHeader>
@@ -115,7 +115,7 @@ const ProjectDetails = () => {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="rounded-lg shadow-md border-eco-blue-200">
           <CardHeader className="bg-eco-blue-500 text-white rounded-t-lg p-4">
             <CardTitle className="text-2xl font-semibold">Obiettivi del Progetto</CardTitle>

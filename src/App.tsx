@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import ProjectDetails from "./pages/ProjectDetails"; // Importa la nuova pagina
+import ProjectDetails from "./pages/ProjectDetails";
+import Layout from "./components/Layout"; // Importa il nuovo Layout
 
 const queryClient = new QueryClient();
 
@@ -16,8 +17,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/project-details" element={<ProjectDetails />} /> {/* Nuova rotta */}
+          {/* Le rotte principali ora utilizzano il Layout */}
+          <Route path="/" element={<Layout><Index /></Layout>} />
+          <Route path="/project-details" element={<Layout><ProjectDetails /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

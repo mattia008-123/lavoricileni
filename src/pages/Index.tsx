@@ -1,10 +1,9 @@
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-eco-gray-50 text-eco-gray-800 p-4">
+    <div className="flex flex-col items-center justify-center h-full">
       <div className="text-center max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-eco-green-100">
         <h1 className="text-5xl font-extrabold mb-6 text-eco-green-700 leading-tight">
           Benvenuto nel tuo Spazio Progetti Sostenibili
@@ -17,9 +16,6 @@ const Index = () => {
             Scopri il Progetto "Orto Didattico"
           </Button>
         </Link>
-      </div>
-      <div className="mt-auto pt-8">
-        <MadeWithDyad />
       </div>
     </div>
   );
