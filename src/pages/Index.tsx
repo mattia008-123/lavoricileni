@@ -1,17 +1,26 @@
-// Update this page (the content is just a fallback if you fail to update the page)
-
 import { MadeWithDyad } from "@/components/made-with-dyad";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">
-          Start building your amazing project here!
+    <div className="min-h-screen flex flex-col items-center justify-center bg-eco-gray-50 text-eco-gray-800 p-4">
+      <div className="text-center max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg border border-eco-green-100">
+        <h1 className="text-5xl font-extrabold mb-6 text-eco-green-700 leading-tight">
+          Benvenuto nel tuo Spazio Progetti Sostenibili
+        </h1>
+        <p className="text-xl text-eco-gray-600 mb-8">
+          Esplora idee innovative per la transizione ecologica e la coesione sociale, ispirate al PNRR.
         </p>
+        <Link to="/project-details">
+          <Button className="bg-eco-green-500 hover:bg-eco-green-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105">
+            Scopri il Progetto "Orto Didattico"
+          </Button>
+        </Link>
       </div>
-      <MadeWithDyad />
+      <div className="mt-auto pt-8">
+        <MadeWithDyad />
+      </div>
     </div>
   );
 };
