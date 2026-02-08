@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Anagrafica 3.0</title>
+
+<style>
+body{
+    font-family: Arial;
+    margin: 20px;
+}
+
+input{
+    margin:5px;
+}
+
+button{
+    margin-top:10px;
+    padding:6px 12px;
+}
+
+table{
+    border-collapse: collapse;
+    width:60%;
+    margin-top:20px;
+}
+
+th, td{
+    border:1px solid black;
+    padding:8px;
+    text-align:center;
+}
+
+th{
+    background-color:#ddd;
+}
+
+.hidden{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGINA INSERIMENTO -->
+
+<div id="paginaInserimento">
+
+<h2>Inserimento persone</h2>
+
+Nome: <input type="text" id="nome"><br>
+Cognome: <input type="text" id="cognome"><br>
+Età: <input type="number" id="eta"><br>
+
+<button onclick="aggiungi()">Aggiungi persona</button>
+<button onclick="invia()">Invia dati</button>
+
+<h3>Persone inserite:</h3>
+<ul id="lista"></ul>
+
+</div>
+
+
+<!-- PAGINA TABELLA  -->
+
+<div id="paginaTabella" class="hidden">
+
+<h2>Elenco persone</h2>
+
+<table id="tabella">
+<tr>
+    <th>Indice</th>
+    <th>Nome</th>
+    <th>Cognome</th>
+    <th>Età</th>
+</tr>
+</table>
+
+<br>
+<button onclick="torna()">Torna all'inserimento</button>
+
+</div>
+
+
+<script>
+
+let persone = [];
+let indici = [];
+
+
+//  CONTROLLO MODALITA' PAGINA 
+
+let parametri = new URLSearchParams(window.location.search);
+
+if(parametri.has("indici")){
+    mostraTabella();
+}else{
+    mostraInserimento();
+}
+
+
+// FUNZIONI PAGINA 1 
+
+function mostraInserimento(){
+    document.getElementById("paginaInserimento").classList.remove("hidden");
+    document.getElementById("paginaTabella").classList.add("hidden");
+}
+
+function aggiungi(){
+
+    let nome = document.getElementById("nome").value;
+    let cognome = document.getElementById("cognome").value;
+    let eta = document.getElementById("eta").value;
+
+    if(nome=="" || cognome=="" || eta==""){
+        alert("Compilare tutti i campi");
+        return;
+    }
+
+    // oggetto persona
+    let persona = {
+        nome:nome,
+        cognome:cognome,
+        eta:parseInt(eta)
+    };
+
+    persone.push(persona);
+
+    // indice progressivo 01,02,03...
+    let indice = (persone.length).toString().padStart(2,"0");
+    indici.push(indice);
+
+    // stampa elenco
+    let li = document.createElement("li");
+    li.textContent = indice + " - " + nome + " " + cognome + " (" + eta + ")";
+    document.getElementById("lista").appendChild(li);
+
+    // pulizia campi
+    document.getElementById("nome").value="";
+    document.getElementById("cognome").value="";
+    document.getElementById("eta").value="";
+}
+
+
+function invia(){
+
+    if(persone.length==0){
+        alert("Inserire almeno una persona");
+        return;
+    }
+
+    // salva nel localStorage
+    localStorage.setItem("persone", JSON.stringify(persone));
+
+    // invia indici tramite URL
+    let url = window.location.pathname + "?indici=" + indici.join(",");
+    window.location.href = url;
+}
+
+
+
+//  FUNZIONI PAGINA 2 
+
+function mostraTabella(){
+
+    document.getElementById("paginaInserimento").classList.add("hidden");
+    document.getElementById("paginaTabella").classList.remove("hidden");
+
+    // recupero persone
+    let personeSalvate = JSON.parse(localStorage.getItem("persone"));
+
+    // recupero indici dall'URL
+    let indiciURL = parametri.get("indici").split(",");
+
+    let tabella = document.getElementById("tabella");
+
+    for(let i=0; i<personeSalvate.length; i++){
+
+        let riga = document.createElement("tr");
+
+        riga.innerHTML = `
+            <td>${indiciURL[i]}</td>
+            <td>${personeSalvate[i].nome}</td>
+            <td>${personeSalvate[i].cognome}</td>
+            <td>${personeSalvate[i].eta}</td>
+        `;
+
+        tabella.appendChild(riga);
+    }
+}
+
+
+function torna(){
+    // cancella parametri URL
+    window.location.href = window.location.pathname;
+}
+
+</script>
+
+</body>
+</html>
