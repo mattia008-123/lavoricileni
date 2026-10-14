@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dati COVID-19 Italia</title>
+</head>
+<body>
+
+<h1>Andamento nazionale COVID-19</h1>
+
+<table border="1" id="tabella">
+  <tr>
+    <th>Data</th>
+    <th>Nuovi positivi</th>
+    <th>Totale positivi</th>
+    <th>Deceduti</th>
+    <th>Totale casi</th>
+    <th>Tamponi</th>
+  </tr>
+</table>
+
+<script>
+fetch("https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json")
+  .then(function (risposta) {
+    return risposta.json();
+  })
+  .then(function (dati) {
+    var tabella = document.getElementById("tabella");
+
+    for (var i = 0; i < dati.length; i++) {
+      var riga = tabella.insertRow();
+      riga.insertCell().innerText = dati[i].data.substring(0, 10);
+      riga.insertCell().innerText = dati[i].nuovi_positivi;
+      riga.insertCell().innerText = dati[i].totale_positivi;
+      riga.insertCell().innerText = dati[i].deceduti;
+      riga.insertCell().innerText = dati[i].totale_casi;
+      riga.insertCell().innerText = dati[i].tamponi;
+    }
+  });
+</script>
+
+</body>
+</html>
