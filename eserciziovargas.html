@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Utenti Minimal</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, button { padding: 8px; margin-right: 5px; }
+    .card { border: 1px solid #ccc; padding: 10px; margin-top: 10px; border-radius: 5px; }
+    #messaggio { margin: 10px 0; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>Ricerca Utenti (AJAX XHR)</h2>
+  
+  <input type="text" id="cerca" placeholder="Scrivi un nome...">
+  <button onclick="caricaUtenti()">Cerca</button>
+  <button onclick="resetta()">Tutti</button>
+
+  <div id="messaggio"></div>
+  <div id="risultato"></div>
+
+  <script>
+    const API = 'https://jsonplaceholder.typicode.com/users';
+
+    // Carica utenti all'apertura della pagina
+    caricaUtenti();
+
+    function caricaUtenti() {
+      const testoCercato = document.getElementById('cerca').value.toLowerCase();
+      const divMessaggio = document.getElementById('messaggio');
+      const divRisultato = document.getElementById('risultato');
+
+      divMessaggio.textContent = 'Caricamento...';
+      divRisultato.innerHTML = '';
+
+      // 1. Creo l'oggetto XMLHttpRequest
+      const xhr = new XMLHttpRequest();
+
+      // 2. Callback al termine della richiesta
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          divMessaggio.textContent = '';
+          const utenti = JSON.parse(xhr.responseText);
+          
+          // Filtro i dati se l'utente ha scritto qualcosa
+          const filtrati = utenti.filter(u => u.name.toLowerCase().includes(testoCercato));
+
+          if (filtrati.length === 0) {
+            divMessaggio.textContent = 'Nessun utente trovato.';
+            return;
+          }
+
+          // Stampo i risultati a schermo
+          filtrati.forEach(u => {
+            divRisultato.innerHTML += `
+              <div class="card">
+                <h3>${u.name}</h3>
+                <p>Email: ${u.email}</p>
+                <p>Città: ${u.address.city}</p>
+              </div>
+            `;
+          });
+        } else {
+          divMessaggio.textContent = 'Errore HTTP: ' + xhr.status;
+        }
+      };
+
+      // Gestione errore di rete
+      xhr.onerror = function() {
+        divMessaggio.textContent = 'Errore di connessione.';
+      };
+
+      // 3. Apro la connessione
+      xhr.open('GET', API, true);
+
+      // 4. Invio la richiesta
+      xhr.send();
+    }
+
+    function resetta() {
+      document.getElementById('cerca').value = '';
+      caricaUtenti();
+    }
+  </script>
+
+</body>
+</html>
