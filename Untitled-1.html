@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Anagrafica Classe</title>
+</head>
+<body style="font-family:Arial; font-size:12pt; background-color:#EEEEEE; padding:20px;">
+
+    <h2>Anagrafica Classe</h2>
+
+    <table border="1" cellpadding="8" cellspacing="0" style="background-color:white; border-collapse:collapse; width:450px;">
+        <thead>
+            <tr style="background-color:teal; color:white; text-align:left;">
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Età</th>
+            </tr>
+        </thead>
+        <tbody id="corpo-tabella"></tbody>
+    </table>
+
+    <script>
+        var xmlString = `
+        <scuola>
+            <classe>
+                <utente><nome>Gioele</nome><cognome>Runza</cognome><eta>18</eta></utente>
+                <utente><nome>Christian</nome><cognome>Pironti</cognome><eta>18</eta></utente>
+                <utente><nome>Mattia</nome><cognome>Vargas Quiroz</cognome><eta>18</eta></utente>
+                <utente><nome>Cristian</nome><cognome>Tognetti</cognome><eta>50</eta></utente>
+                <utente><nome>Luca</nome><cognome>Carnicella</cognome><eta>17</eta></utente>
+                <utente><nome>Matteo</nome><cognome>Messa</cognome><eta>18</eta></utente>
+                <utente><nome>Federico</nome><cognome>Lui</cognome><eta>18</eta></utente>
+            </classe>
+        </scuola>`;
+
+        var xmlDoc = new DOMParser().parseFromString(xmlString, "text/xml");
+        var utenti = xmlDoc.getElementsByTagName("utente");
+        var html = "";
+
+        for (var i = 0; i < utenti.length; i++) {
+            var nome = utenti[i].getElementsByTagName("nome")[0].textContent;
+            var cognome = utenti[i].getElementsByTagName("cognome")[0].textContent;
+            var eta = utenti[i].getElementsByTagName("eta")[0].textContent;
+            html += "<tr><td>" + nome + "</td><td>" + cognome + "</td><td>" + eta + "</td></tr>";
+        }
+
+        document.getElementById("corpo-tabella").innerHTML = html;
+    </script>
+
+</body>
+</html>
