@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negozio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .lista { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .scheda { border: 1px solid #000; padding: 10px; width: 180px; }
+        .box-carrello { border: 1px solid #000; padding: 15px; margin-top: 20px; max-width: 350px; }
+        input { display: block; margin-bottom: 8px; padding: 4px; width: 95%; }
+    </style>
+</head>
+<body>
+
+    <h1>Negozio</h1>
+    
+    <button onclick="mostra('tutti')">Tutti</button>
+    <button onclick="mostra('food')">Food (JSON)</button>
+    <button onclick="mostra('non-food')">Non-Food (XML)</button>
+
+    <div id="catalogo" class="lista"></div>
+
+    <div class="box-carrello">
+        <h2>Basket</h2>
+        <ul id="basket"></ul>
+        <p>Totale: € <b id="totale">0</b></p>
+
+        <hr>
+        <h3>Dati Cliente</h3>
+        <input type="text" id="nome" placeholder="Nome e Cognome">
+        <input type="text" id="cf" placeholder="Codice Fiscale">
+        <input type="text" id="indirizzo" placeholder="Indirizzo">
+        <button onclick="creaPDF()">Scarica Scontrino PDF</button>
+    </div>
+
+    <!-- DATI FOOD (JSON) -->
+    <script id="file-json" type="application/json">
+    [
+        { "tipo": "food", "nome": "Cassetta Verdure", "prezzo": 15 },
+        { "tipo": "food", "nome": "Quarto di Carne", "prezzo": 69 }
+    ]
+    </script>
+
+    <!-- DATI NON-FOOD (XML) -->
+    <script id="file-xml" type="application/xml"><negozio>
+        <articolo><nome>Smartphone</nome><prezzo>1200</prezzo></articolo>
+        <articolo><nome>Laptop</nome><prezzo>870</prezzo></articolo>
+        <articolo><nome>Motociclo</nome><prezzo>11000</prezzo></articolo>
+    </negozio></script>
+
+    <script>
+        let prodotti = [];
+        let carrello = [];
+
+        // Lettura JSON via XMLHttpRequest
+        let urlJson = URL.createObjectURL(new Blob([document.getElementById("file-json").textContent]));
+        let xhr1 = new XMLHttpRequest();
+        xhr1.onload = function() {
+            let lista = JSON.parse(this.responseText);
+            for (let i = 0; i < lista.length; i++) prodotti.push(lista[i]);
+            mostra('tutti');
+        };
+        xhr1.open("GET", urlJson);
+        xhr1.send();
+
+        // Lettura XML via XMLHttpRequest
+        let urlXml = URL.createObjectURL(new Blob([document.getElementById("file-xml").textContent], {type: "text/xml"}));
+        let xhr2 = new XMLHttpRequest();
+        xhr2.onload = function() {
+            let articoli = this.responseXML.getElementsByTagName("articolo");
+            for (let i = 0; i < articoli.length; i++) {
+                prodotti.push({
+                    tipo: "non-food",
+                    nome: articoli[i].getElementsByTagName("nome")[0].textContent,
+                    prezzo: Number(articoli[i].getElementsByTagName("prezzo")[0].textContent)
+                });
+            }
+            mostra('tutti');
+        };
+        xhr2.open("GET", urlXml);
+        xhr2.send();
+
+        function mostra(filtro) {
+            let html = "";
+            for (let i = 0; i < prodotti.length; i++) {
+                if (filtro == "tutti" || prodotti[i].tipo == filtro) {
+                    html += `<div class="scheda">
+                                <div>[${prodotti[i].tipo}]</div>
+                                <b>${prodotti[i].nome}</b>
+                                <p>€ ${prodotti[i].prezzo}</p>
+                                <button onclick="aggiungi(${i})">Aggiungi</button>
+                             </div>`;
+                }
+            }
+            document.getElementById("catalogo").innerHTML = html;
+        }
+
+        function aggiungi(indice) {
+            carrello.push(prodotti[indice]);
+            let html = "";
+            let somma = 0;
+            for (let i = 0; i < carrello.length; i++) {
+                html += `<li>${carrello[i].nome} - € ${carrello[i].prezzo}</li>`;
+                somma += carrello[i].prezzo;
+            }
+            document.getElementById("basket").innerHTML = html;
+            document.getElementById("totale").innerText = somma;
+        }
+
+        function creaPDF() {
+            let nome = document.getElementById("nome").value;
+            let cf = document.getElementById("cf").value;
+            let indirizzo = document.getElementById("indirizzo").value;
+
+            if (carrello.length == 0 || nome == "") {
+                alert("Inserisci almeno un prodotto e i tuoi dati!");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            let doc = new jsPDF();
+
+            doc.text("SCONTRINO FISCALE", 20, 20);
+            doc.text("Cliente: " + nome, 20, 30);
+            doc.text("CF: " + cf, 20, 40);
+            doc.text("Indirizzo: " + indirizzo, 20, 50);
+            doc.text("-------------------------", 20, 60);
+
+            let y = 70;
+            for (let i = 0; i < carrello.length; i++) {
+                doc.text(carrello[i].nome + " - EUR " + carrello[i].prezzo, 20, y);
+                y += 10;
+            }
+
+            doc.text("-------------------------", 20, y);
+            doc.text("TOTALE: EUR " + document.getElementById("totale").innerText, 20, y + 10);
+
+            doc.save("scontrino.pdf");
+        }
+    </script>
+
+</body>
+</html>
